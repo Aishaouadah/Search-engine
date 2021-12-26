@@ -15,7 +15,7 @@ titles = []
 resumies = []
 
 
-path = "C:/Users/AzurComputer\Desktop\Other\Projet_RI\cacm\cacm\cacm.all"
+path = "C:\\Users\\User\\Desktop\\M2-S3\\RI\\PROJECT\\cacm\\cacm.all"
 with open(path,'r') as cacm:
     # lire ligne par ligne et s'arreter au niveau de l'identificatuer de debut du document
     #lines = cacm.read()

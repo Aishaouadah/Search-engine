@@ -25,6 +25,7 @@ def find_terms(docs):
          
     for i in range(len(terms)):
         #delete B A N X parts    
+        
         terms[i]  = terms[i].split('.B ')[0]
         terms[i]  = terms[i].split('.A ')[0]
         terms[i]  = terms[i].split('.N ')[0]
@@ -43,6 +44,9 @@ def find_terms(docs):
 
         l.append(term)
     return(l)
+
+
+#find_terms(docs)
 
 # Make the terms of docs in one list 
 def all_terms(l):
@@ -106,9 +110,6 @@ def freq(term,doc):
         
 #calculate weight of a term in a doc
 
-####   TAKES A LOT OF TIME 
-#  STILL HAVE . 
-# ALL TERMS HAVE DUPLICATES  ITEMS 
 
 def calculate_wieght(term , doc):
     term = term.lower()
@@ -193,7 +194,8 @@ def internal_product(inverse_doc_matrix, numDoc , query):
             rsv = rsv + inverse_doc_matrix[(term, numDoc)] * poids_query[term]
     return rsv
 
-#inverse_doc_matrix =  inverse_doc(all_terms, l )
+inverse_doc_matrix =  inverse_doc(all_terms, l )
+#print(inverse_doc_matrix)
 #print(internal_product(inverse_doc_matrix, 2, 'aicha, ouadah Subtractions' ))
         
 
@@ -286,7 +288,8 @@ def precision_internal_product(inverse_doc_matrix, all_docs, query):
     doc_pretinent_selectionne = doc_pretinent_total[len(doc_pretinent_total)-t:]
     if len(doc)== 0:
         return 0
-    return len(doc_pretinent_selectionne)/len(doc)
+    return (len(doc_pretinent_selectionne)/len(doc)  , doc_pretinent_selectionne)
+
     
 
 def rappel_internal_product(inverse_doc_matrix, all_docs, query):    
@@ -443,9 +446,48 @@ def rappel_jaccard(inverse_doc_matrix, all_docs, query):
         return 0
     return len(doc_pretinent_selectionne)/len(doc_pretinent_total)
     
+ 
+def createTitleDocs(docs):
+    titles=[]
+    with open(docs,'r') as cacm:
+        file = cacm.read() 
+        file = file.replace('\n' ,' ')
+        file = file.split('.I ')
+    # file = a doc
+    for f in file:
+        f=f.split('.T ')
+        titles.append(str(f).split('.B ')[0])
+    titles[40] = (str(titles[40]).split('.W ')[0])
     
-'''
-print(precision_internal_product(inverse_doc_matrix, l , 'programs and computers'))
+    return titles
+            
+    #titles[i]  = [w for w in titles[i] if w not in file]
+    # delete avant T delete apres B
+    # split T get the 2 nd part , split the 2nd part with B and take the First 1
+    
+    
+createTitleDocs(docs)    
+    
+    
+def getTitle(tuple):
+    # get the .T of the I. index of tuple
+    tuple = tuple[1]
+    titles = []
+    doc_id = []
+    for t in tuple:
+        doc_id.append(t[0])
+    doc_id.reverse()
+    # find titles 
+    titre = createTitleDocs(docs)
+    for i in doc_id:
+        titles.append(titre[i])
+    return titles
+    
+  
+    
+        
+print(getTitle(precision_internal_product(inverse_doc_matrix, l , 'What articles exist which deal with TSS (Time Sharing System), an operating system for IBM computers?') ))
+'''print(precision_internal_product(inverse_doc_matrix, l , 'programs and computers'))
 print(rappel_internal_product(inverse_doc_matrix, l , 'programs and computers'))
 print(precision_cosinus(inverse_doc_matrix, l , 'programs and computers'))
 print(rappel_cosinus(inverse_doc_matrix, l , 'programs and computers'))
