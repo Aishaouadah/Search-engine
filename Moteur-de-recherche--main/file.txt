@@ -1,0 +1,4 @@
+hello aicha
+#this is a comment 
+hello wrld
+# this neeed to be ignored 
